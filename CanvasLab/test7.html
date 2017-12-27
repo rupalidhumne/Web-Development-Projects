@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas</title>
+    <style type="text/css">
+            html{
+                background-color: white;
+            }
+            canvas{
+                background-color: #CC0066;
+            }
+            button.transbox
+        {
+            border: none; 
+            font-size: +20; 
+            font-weight: bold; 
+            height:30px; 
+            width:50px; 
+            background-color:#CC0066; 
+            opacity: 0.7; 
+            filter:alpha(opacity=70); 
+            color:black
+            margin:20px;
+        }
+        div.ce
+        {
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+            var canvas;
+            var context;
+            var x1;
+            var y1;
+            var x2;
+            var y2;
+            var dotsX = [];
+            var dotsY = [];
+            var color = [];
+            var isMouseDown = false;
+            var drawing = false;
+            var dotMove = false;
+            var indexHitDot = 0;
+            var keepborder = true;
+            var isCtrlDown = false;
+            var margin; 
+            
+            function init(){
+                canvas = document.getElementById("myCanvas");
+                context = canvas.getContext("2d");
+                canvas.addEventListener("mousedown", setUp, false);
+                canvas.addEventListener("mousemove", draw, false);
+                canvas.addEventListener("mouseup", execute, false);
+                document.getElementById("clear").addEventListener("click", varSetup, false);
+                function varSetup(){
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    dotsX = [];
+                    dotsY = [];
+                    color = [];
+                    isMouseDown = false;
+                    drawing = false;
+                }
+                    document.onkeydown = function(event){
+                        if(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40)
+                            arrowMove(event.keyCode);
+               if(event.keyCode == 27){
+                 for(var i = 0; i < color.length; i++){
+                            context.beginPath();
+                            color[i]="#000000";
+                                context.fillStyle = color[i];
+                                context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                            context.fill();
+                        }
+            }
+        }
+            }
+            function arrowMove(direction){
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                for(var i = 0; i < color.length; i++){
+                    context.beginPath();
+                    if(color[i] == "white"){
+                        if(direction == 37){
+                            if(dotsX[i] >= 1){
+                                dotsX[i]=dotsX[i]-1;
+                            }
+                        }
+                        else if(direction == 38){
+                            if(dotsY[i] >= 1){
+                                dotsY[i]=dotsY[i]-1;
+                            }
+                        }
+                        else if(direction == 39){
+                            if(dotsX[i] <= canvas.width){
+                                dotsX[i]=dotsX[i]+1;
+                            }
+                        }
+                        else{
+                            if(dotsY[i] <= canvas.width){
+                                dotsY[i]=dotsY[i]+1;
+                            }
+                        }
+                    }
+                    context.fillStyle = color[i];
+                    context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                    context.fill();
+                }
+            }
+            function getMousePos(event){
+                var rect = canvas.getBoundingClientRect();
+                return{
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                };
+            }
+            HTMLCanvasElement.prototype.getMousePos = getMousePos;
+            
+            function setUp(event){
+                if(event.ctrlKey || event.metaKey){
+                    isCtrlDown = true;
+                }
+                var pos = canvas.getMousePos(event);
+                var posX = pos.x;
+                var posY = pos.y;
+                x1 = parseInt(posX);
+                y1 = parseInt(posY);
+                isMouseDown = true;
+                if(clicked()){
+                    dotMove = true;
+                    indexHitDot = dotMovement();
+                }
+            }
+            function dotMovement(){
+                var indexOfHits = [];
+                for(var i = 0; i < color.length; i++){
+                    var temp = Math.sqrt((dotsX[i]-x1)*(dotsX[i]-x1) + (dotsY[i] - y1)*(dotsY[i] - y1));
+                    if(temp <= 7){
+                        indexOfHits.push(i);
+                    }
+                }
+                return indexOfHits[indexOfHits.length - 1];
+            }
+            function clicked(){
+                for(var i = 0; i < color.length; i++){
+                    var temp = Math.sqrt((dotsX[i] - x1)*(dotsX[i]-x1) + (dotsY[i] - y1)*(dotsY[i]-y1));
+                    if(temp <= 7){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            function draw(){
+                if(isMouseDown && !dotMove){
+                    drawing = true;
+                    var pos2 = canvas.getMousePos(event);
+                    var posX = pos2.x;
+                    var posY = pos2.y;
+                    x2 = parseInt(posX);
+                    y2 = parseInt(posY);
+                    if(Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)) > margin){
+                        margin = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+                    }
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.beginPath();
+                    context.rect(x1, y1, x2-x1, y2-y1);
+                    context.stroke();
+
+                    for(var i = 0; i < color.length; i++){
+                        context.beginPath();
+                        context.fillStyle = color[i];
+                        context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                        context.fill();
+                    }
+                }
+                else if(isMouseDown && dotMove){
+                    var pos2 = canvas.getMousePos(event);
+                    var posX = pos2.x;
+                    var posY = pos2.y;
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    var xDisplacement = 0;
+                    var yDisplacement = 0;
+                    for(var i = 0; i < color.length; i++){
+                        if(i == indexHitDot){
+                                xDisplacement = posX - dotsX[i];
+                                yDisplacement = posY- dotsY[i];
+                        }
+                    }
+                    for(var i = 0; i < color.length; i++){
+                        if(color[i] == "#000000"){
+                            context.beginPath();
+                            if(i == indexHitDot){
+                                dotsX[i] = posX;
+                                dotsY[i] = posY;
+                                color[i] = "white";
+                                for(var k = 0; k < color.length; k++){
+                                    if(k != i && !isCtrlDown)
+                                        color[k] = "#000000";
+                                }
+                            }
+                            context.fillStyle = color[i];
+                            context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                            context.fill();
+                        }
+                        else{
+                            context.beginPath();
+                            if(color[i] == "white"){
+                                dotsX[i] = dotsX[i] + xDisplacement;
+                                dotsY[i] = dotsY[i] + yDisplacement;
+                            }
+                            context.fillStyle = color[i];
+                            context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                            context.fill();
+                        }
+                    }
+                }
+                else{
+                }
+            }
+
+            function execute(){
+                if(dotMove){
+                    dotMove = false;
+                }
+                else if(drawing == false || margin < 5){
+                    if(isCtrlDown == false){
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        for(var i = 0; i < color.length; i++){
+                            if(color[i] == "white"){
+                                color[i] = "#000000";
+                            }
+                            context.beginPath();
+                            context.fillStyle = color[i];
+                            context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                            context.fill();
+                        }
+                    }
+                    context.beginPath();
+                    context.fillStyle = "white";
+                    context.arc(x1, y1, 7, 0, 2*Math.PI, true);
+                    context.fill();
+                    dotsX.push(x1);
+                    dotsY.push(y1);
+                    color.push("white");
+                }
+                else{
+                    drawing = false;
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    for(var i = 0; i < color.length; i++){
+                        context.beginPath();
+                        var xLower, xUpper, yLower, yUpper;
+                        if(x1 >= x2){
+                            xUpper = x1 + 7;
+                            xLower = x2 - 7;
+                        }
+                        else{
+                            xUpper = x2 + 7;
+                            xLower = x1 - 7;
+                        }
+                        if(y1 >= y2){
+                            yUpper = y1 + 7;
+                            yLower = y2 - 7;
+                        }
+                        else{
+                            yUpper = y2 + 7;
+                            yLower = y1 - 7;
+                        }
+
+                        if(dotsX[i] < xUpper && dotsX[i] > xLower && dotsY[i] < yUpper && dotsY[i] > yLower){
+                            if(color[i] == "#000000"){
+                                color[i] = "white";
+                                context.fillStyle = "white";
+                            }
+                            else{
+                                context.fillStyle = color[i];
+                            }
+                            context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                        }
+                        else{
+                            if(isCtrlDown){
+                                context.fillStyle = color[i];
+                            }
+                            else{
+                                color[i] = "#000000";
+                                context.fillStyle = color[i];
+                            }
+                            context.arc(dotsX[i], dotsY[i], 7, 0, 2*Math.PI, true);
+                        }
+                        context.fill();
+                    }
+                }
+                isMouseDown = false;
+                isCtrlDown = false;
+                margin = 0;
+                context.fillStyle = "black";
+            }
+    </script>
+</head>
+<body onload="init()">
+    <center>
+        <br>
+        <h1>My Canvas</h1>
+        <div class = 'ce'>
+            <button class = "transbox" type="button" id="clear" size="23" onclick="eraseT()" accesskey = 'c'><u>C</u>lear</button>
+        </div> 
+        <br> 
+        <canvas height="500px" id="myCanvas" style="border:1px solid black"width="1000px"></canvas>
+        <br>
+        <br>
+    </center>
+</body>
+</html>

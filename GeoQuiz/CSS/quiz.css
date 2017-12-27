@@ -1,0 +1,52 @@
+h1 {
+	background: blue
+	border-style: single;
+	font-family: "Papyrus";
+  color: red;
+	text-indent : 30px;
+  text-align: center;
+  font-size: 50px;
+}
+body {
+     background-color: #d0e4fe;
+     font-size: 20px;
+}
+ul{
+    list-style-type: circle;
+}
+p {
+      font-size: 20px;
+      color:red;
+}
+#prog{
+      font-size: 30px;
+  padding : 15px;
+}
+#stuff{
+  font-size: 30px;
+  text-indent : 15px;
+}
+#start{
+font-size: 22px;
+font-family: "Trebuchet MS";
+background: green;
+color: black;
+}
+#score{
+  font-size: 30px;
+  text-align: right;
+  float: right;
+  font-family: "Verdana";
+   margin-right:200px;
+}
+#end{
+font-size: 22px;
+font-family: "Trebuchet MS";
+background: red;
+color: black;
+}
+#redo{
+font-size: 22px;
+font-family: "Trebuchet MS";
+background: yellow;
+text-indent: 10px;

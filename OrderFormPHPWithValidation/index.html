@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form</title>
+<style type="text/css">
+input[type="date"]:before
+{
+content: attr(placeholder) !important;
+color: #aaa;
+margin-right: 0.5em;
+}
+input[type="date"]:focus:before,
+input[type="date"]:valid:before
+{
+content: "";
+}
+h1{
+text-shadow: 2px 2px #FF0000
+}
+body
+{
+background-color: #FFCCCC;
+}
+input
+{
+background-color: #CCCCFF;
+}
+select{
+display:none;
+}
+</style>
+<script>
+function dropMenu1()
+{
+document.getElementById("menu1").style.display="block";
+document.getElementById("menu2").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+function dropMenu2()
+{
+document.getElementById("menu2").style.display="block";
+document.getElementById("menu1").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+
+}
+function drop2() //if box too big just do style.display = none, getElementByClassname
+{
+var e = event.target;
+if(e.value=="1")
+{
+document.getElementById("menu3").style.display="block";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="2")
+{
+document.getElementById("menu4").style.display="block";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="3")
+{
+document.getElementById("menu5").style.display="block";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="4")
+{
+document.getElementById("menu6").style.display="block";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+}
+function list2() //if box too big just do style.display = none, getElementByClassname
+{
+var e = event.target;
+if(e.value=="1")
+{
+document.getElementById("menu7").style.display="block";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="2")
+{
+document.getElementById("menu8").style.display="block";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="3")
+{
+document.getElementById("menu9").style.display="block";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu7").style.display="none";
+document.getElementById("menu10").style.display="none";
+}
+else if(e.value=="4")
+{
+document.getElementById("menu10").style.display="block";
+document.getElementById("menu9").style.display="none";
+document.getElementById("menu8").style.display="none";
+document.getElementById("menu6").style.display="none";
+document.getElementById("menu3").style.display="none";
+document.getElementById("menu4").style.display="none";
+document.getElementById("menu5").style.display="none";
+document.getElementById("menu7").style.display="none";
+
+}
+}
+function validateName(fld)
+{
+    var error = "";
+    var illegalChars = /[1234567890_+=|:;!@#$%^&*()~]/;
+     // allow letters, numbers, and underscores
+     if (illegalChars.test(fld.value)) 
+    {
+        fld.style.background = 'Yellow'; 
+        error = "The name contains illegal characters.\n";
+    } 
+    else 
+    {
+        fld.style.background = 'White';
+    } 
+    return error;
+
+}
+/*
+function validateUsername(fld) {
+    var error = "";
+    var illegalChars = /\W/; // allow letters, numbers, and underscores
+ 
+    if (fld.value == "") {
+        fld.style.background = 'Yellow'; 
+        error = "You didn't enter a username.\n";
+    } else if ((fld.value.length < 5) || (fld.value.length > 15)) {
+        fld.style.background = 'Yellow'; 
+        error = "The username is the wrong length.\n";
+    } else if (illegalChars.test(fld.value)) {
+        fld.style.background = 'Yellow'; 
+        error = "The username contains illegal characters.\n";
+    } else {
+        fld.style.background = 'White';
+    } 
+    return error;
+}
+*/
+function validateCity(fld) 
+{
+    var error = "";
+    var illegalChars = /[1234567890]/; // allow letters, numbers, and underscores
+  if (illegalChars.test(fld.value)) 
+  {
+        fld.style.background = 'Yellow'; 
+        error = "The city contains illegal characters.\n";
+    } 
+    else {
+        fld.style.background = 'White';
+    } 
+    return error;
+}
+function validateState(fld) 
+{
+    var error = "";
+    var illegalChars = /[1234567890]/; // allow letters, numbers, and underscores
+  if (illegalChars.test(fld.value)) 
+  {
+        fld.style.background = 'Yellow'; 
+        error = "The state contains illegal characters.\n";
+  }
+    else {
+        fld.style.background = 'White';
+    } 
+    return error;
+}
+function trim(s)
+{
+  return s.replace(/^\s+|\s+$/, '');
+} 
+function validateZip(fld) 
+{
+    var error = "";
+    var illegalChars = /[A-z]/; // allow letters, numbers, and underscores
+  if (illegalChars.test(fld.value)) 
+  {
+        fld.style.background = 'Yellow'; 
+        error = "The zip codecontains illegal characters.\n";
+  }
+  if(fld.value.length!=5)
+  {
+    error = "The zip is wrong length.\n";
+  }
+    else {
+        fld.style.background = 'White';
+    } 
+    return error;
+}
+
+function validateEmail(fld) {
+    var error="";
+    var tfld = trim(fld.value);                        // value of field with whitespace trimmed off
+    var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+    var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
+    
+    if (fld.value == "") {
+        fld.style.background = 'Yellow';
+        error = "You didn't enter an email address.\n";
+    } else if (!emailFilter.test(tfld)) {              //test email for illegal characters
+        fld.style.background = 'Yellow';
+        error = "Please enter a valid email address.\n";
+    } else if (fld.value.match(illegalChars)) {
+        fld.style.background = 'Yellow';
+        error = "The email address contains illegal characters.\n";
+    } else {
+        fld.style.background = 'White';
+    }
+    return error;
+}
+/*
+function validatePhone(fld) {
+    var error = "";
+    var stripped = fld.value.replace(/[\(\)\.\-\ ]/g, '');     
+
+   if (fld.value == "") {
+        error = "You didn't enter a phone number.\n";
+        fld.style.background = 'Yellow';
+    } else if (isNaN(parseInt(stripped))) {
+        error = "The phone number contains illegal characters.\n";
+        fld.style.background = 'Yellow';
+    } else if (!(stripped.length == 10)) {
+        error = "The phone number is the wrong length. Make sure you included an area code.\n";
+        fld.style.background = 'Yellow';
+    } 
+    return error;
+}
+*/
+function validateFormOnSubmit(theForm) {
+var reason = "";
+
+  reason += validateName(theForm.user);
+  reason += validateEmail(theForm.email);
+  reason += validateCity(theForm.city);
+  reason += validateState(theForm.state);
+  reason += validateZip(theForm.zip);
+      
+  if (reason != "") 
+  {
+    alert("Some fields need correction:\n" + reason);
+    return false;
+  }
+
+  return true;
+}
+</script>
+</head>
+<body OnLoad = "document.myform.user.focus();">
+<h1> Food Order! </h1>
+<h4> * is required</h4>
+<form  action ="data.php" method="post" autocomplete="on" name="myform" onsubmit="return validateFormOnSubmit(this)" >
+Username*:
+<input type="text" name="user" placeholder="Username" required>
+<br>
+City*:
+<input type="text" name="city" placeholder="City" required>
+<br>
+State*:
+<input type="text" name="state" placeholder="State" required>
+<br>
+Zip*:
+<input type="text" name="zip" placeholder="Zip Code" required>
+<br>
+Url*:
+<input type="url" name="url" placeholder="URL" required>
+<br>
+Email*:
+<input type="email" name="email" placeholder="user@mydomain.com" required>
+<br>
+Date of Survey*:
+<input type="date" name="date" placeholder = "Choose a Date" required>
+<br>
+Additional Comments:
+<input type="text" name="comments">
+<br>
+Question type:
+<br>
+<input type="radio" name="d" value="drop" onClick="dropMenu1()"> Dropdown
+<br>
+<input type="radio" name="d" value="list" onClick = "dropMenu2()"> List View
+<br>
+<select id="menu1" name="menu1" onChange="drop2()">
+<option value="1">Breakfast</option>
+<option value="2">Lunch</option>
+<option value="3">Dinner</option>
+<option value="4">Dessert</option>
+</select>
+<select id="menu2" name="menu2"  size="4" onChange="list2()">
+<option value="1">Breakfast</option>
+<option value="2">Lunch</option>
+<option value="3">Dinner</option>
+<option value="4">Dessert</option>
+</select>
+<select id="menu3" name="menu3" >
+<option value="W">Waffles</option>
+<option value="P">Pancakes</option>
+<option value="C">Cereal</option>
+</select>
+<select id="menu4" name="menu4" >
+<option value="San">Sandwich</option>
+<option value="Pi">Pizza</option>
+<option value="Pa">Pasta</option>
+<option value="Sal">Salad</option>
+</select>
+<select id="menu5" name="menu5" >
+<option value="St">Steak</option>
+<option value="Fi">Fish</option>
+<option value="Chi">Chicken</option>
+<option value="Ri">Rice</option>
+<option value="Cas">Casserole</option>
+</select>
+<select id="menu6" name="menu6" >
+<option value="Ic">Ice Cream</option>
+<option value="Cak">Cake</option>
+<option value="Bro">Brownies</option>
+<option value="Coo">Cookies</option>
+<option value="Cus">Custard</option>
+<option value="Pie">Pie</option>
+</select>
+<select id="menu7" name="menu7"  size="3">
+<option value="W">Waffles</option>
+<option value="P">Pancakes</option>
+<option value="C">Cereal</option>
+</select>
+<select id="menu8" name="menu8"  size="4">
+<option value="San">Sandwich</option>
+<option value="Pi">Pizza</option>
+<option value="Pa">Pasta</option>
+<option value="Sal">Salad</option>
+</select>
+<select id="menu9" name="menu9" size="5">
+<option value="St">Steak</option>
+<option value="Fi">Fish</option>
+<option value="Chi">Chicken</option>
+<option value="Ri">Rice</option>
+<option value="Cas">Casserole</option>
+</select>
+<select id="menu10" name="menu10"  size="6">
+<option value="Ic">Ice Cream</option>
+<option value="Cak">Cake</option>
+<option value="Bro">Brownies</option>
+<option value="Coo">Cookies</option>
+<option value="Cus">Custard</option>
+<option value="Pie">Pie</option>
+</select>
+<br>
+<input type="submit" value="Submit">
+</form>
+<a href="https://www.tjhsst.edu/~2017rdhumne/">return to index</a>
+</body>
+</html>

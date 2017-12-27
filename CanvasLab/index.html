@@ -1,0 +1,387 @@
+
+
+<html> 
+<head> 
+	<style>
+		body
+		{
+			background-color: #FFCCCC;
+		}
+		turkey
+		{
+			background-color: green;
+		}
+	</style>
+	<title> Canvas </title> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript"> 
+		var canvas;  
+		var xval = [];
+		var yval = [];
+		var dcolor = []; 
+        var dotsel = []; 
+        var selected=false;
+        var xposel;
+        var yposel;
+		var ctx; 
+		var currDraw = true; 
+		var step = 0; 
+		var timeoutID; 
+		var selecting = false; 
+		var ctrl=false;
+		var moving = false; 
+        var xpos;
+        var width;
+        var ypos;
+        var height; 
+        var edges = [];
+		function save()
+		{
+			var xmlhttp = new XMLHttpRequest();
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() 
+			{
+				document.getElementById("product").innerHTML = 'waiting';
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+				{
+					document.getElementById("product").innerHTML = xmlhttp.responseText;
+				}
+			}
+			var args =
+			 {
+				'xval':xval,
+				'yval':yval
+
+			};
+			xmlhttp.open("GET", "dots.php?"+dw_encodeVars(args), true);
+			xmlhttp.send();
+		}
+		function dw_encodeVars(params) 
+		{
+			var str = '';
+			for (var i in params ) 
+			{
+				str += encodeURIComponent(i) + '=' + encodeURIComponent( params[i] ) + '&';
+			}
+			return str.slice(0, -1);
+		}
+		function setup(){
+			canvas = $('#canvas'); 
+			ctx = canvas[0].getContext("2d"); 
+			ctx.beginPath(); 
+			ctx.strokeStyle="rgb(0,0,0)";
+			var interval;
+			canvas.mousedown(function(){
+				var startXval = event.x;
+				var startYval = event.y;
+				var curXval = startXval; 
+				var curYval = startYval;
+				var can=document.getElementById('canvas');
+				var rect = can.getBoundingClientRect();
+				var currentDot = clickDot(startXval - rect.left, startYval - rect.top, false);
+				if(currentDot != -1){
+					selecting = true; 
+					canvas.mousemove(function(){
+						move(event.x - curXval, event.y- curYval); 
+						curXval = event.x; 
+						curYval = event.y; 
+					}); 
+				}
+				else{
+					interval = setInterval(function(){ 
+						canvas.mousemove(function(){
+								select(startXval, startYval); 
+						}); 
+					}, 150);
+				}
+			}); 
+			canvas.mouseup(function(){//when the mouse is released
+				if(!currDraw){
+					deleteRect(); 
+				}
+				clearInterval(interval);
+				setColor();
+				var can=document.getElementById('canvas');
+				var rect = can.getBoundingClientRect();
+				drawDot(event.x - rect.left, event.y - rect.top, true); 
+				canvas.unbind('mousemove');
+				currDraw = true; 
+			});
+			canvas.mouseleave(function(){//for when the mouse leaves the canvas
+				clearInterval(interval); 
+				canvas.unbind('mousemove');
+			}) 
+         document.onkeydown = function(e){
+		if(selecting)
+		{
+			click(e.keyCode);
+		}
+		}
+         document.onkeyup = function(e){
+        if(e.keyCode == 17)
+        {
+			ctrl = false;
+		}
+		}
+	}
+		function clickDot(x, y){
+			for(var d = 0; d <xval.length; d++){
+				if(x > xval[d] && x < xval[d] + 20 && y > yval[d] && y < yval[d] + 20){
+					if(!dotsel[d]){
+						currDraw = true; 
+						if(!ctrl){
+							for(var p = 0; p <xval.length; p++){
+								dotsel[p] = false; 
+								ctx.fillStyle = dcolor[p]; 
+								drawDot(xval[p], yval[p], false); 			
+							}
+						}
+						dotsel[d] = true;
+						ctx.fillStyle = "black"; 
+						drawDot(xval[p], yval[p], false); 
+						currDraw = false; 
+					}
+					return d; 
+				}
+			}
+		return -1; 
+		}
+		function delDots(){
+			currDraw = true; 
+			var newxval = [];
+			var newyval = []; 
+			var newdotsel = []; 
+			var newdcolor = [];
+			for(var d = 0; d < xval.length; d++){
+				if(!dotsel[d]){
+					newxval.push(xval[d]); 
+					newyval.push(yval[d]); 
+					newdcolor.push(dcolor[d]); 
+					newdotsel.push(false); 
+				}
+			}
+			xval = newxval; 
+			yval = newyval;
+			dotsel = newdotsel; 
+			dcolor = newdcolor; 
+			ctx.clearRect(0, 0, 500, 500);
+			for(var d = 0; d < xval.length; d++){
+				ctx.fillStyle = dcolor[d]; 
+				drawDot(xval[d], yval[d], false); 			
+			}
+		}
+		function deleteRect(){
+		    ctx.beginPath();
+			ctx.clearRect(0, 0, 500, 500);
+			for(var d = 0; d < xval.length; d++){
+				ctx.fillStyle = dcolor[d]; 
+				if(dotsel[d]){
+					ctx.fillStyle = "black"; 
+                    xval[d] = xval[d]; 
+                    yval[d] = yval[d]; 
+				}
+				currDraw = true; 
+				drawDot(xval[d], yval[d], false); 			
+			}
+			currDraw = false; 
+		}
+		function click(key){
+			switch(key){
+                case 37:
+                    move(-1, 0); 
+                    break;
+                case 38:
+                    move(0, -1);  
+                    break;
+                case 39:
+                    move(1, 0); 
+                    break;
+                case 40:
+                    move(0, 1); 
+                    break;
+                case 46: 
+                	delDots(); 
+                	break; 
+                case 27:
+                	for(var d = 0; d < xval.length; d++){
+                            ctx.fillStyle = dcolor[d]; 
+                            dotsel[d] = false; 
+                            console.log(dotsel);
+                            ctx.fillRect(xval[d], yval[d], 10, 10); 
+                    }
+                    break; 
+                 case 17:
+					ctrl = true;
+					if(selecting)
+					{
+						for(var d = 0; d < xval.length; d++)
+						{
+							ctx.fillStyle = "black"; 
+						}
+					}
+					break;
+				case 8:
+					if(selecting)
+					{
+						
+						delDots();
+					}
+					selecting=false;
+					break;
+				case 69:
+				drawEdges();
+				selected=true;
+				xposel=event.x;
+				yposel=event.y;
+				break;
+				case 67:
+				clearEdges();
+				case 84:
+				toggleEdges();
+            }
+		}
+        function move(xmove, ymove){
+            ctx.beginPath();
+			ctx.clearRect(0, 0, 500, 500);
+            xpos += xmove; 
+            ypos += ymove; 
+            for(var d = 0; d < xval.length; d++){
+				ctx.fillStyle = dcolor[d]; 
+				if(dotsel[d]){
+					ctx.fillStyle = "black"; 
+                    xval[d] = xval[d] + xmove; 
+                    yval[d] = yval[d] + ymove; 
+				}
+				currDraw = true; 
+				drawDot(xval[d], yval[d], false); 			
+			}
+			currDraw = false; 
+        }
+		function select(startXval, startYval){
+            selecting = true; 
+			currDraw = false; 
+			ctx.strokeStyle = "black"; 
+			ctx.beginPath();
+			ctx.clearRect(0, 0, 500, 500);
+            var can=document.getElementById('canvas');
+			var rect = can.getBoundingClientRect();
+            xpos = startXval-rect.left; 
+            ypos = startYval-rect.top; 
+            
+            width = event.x- startXval;
+            height = event.y- startYval; 
+			ctx.rect(xpos, ypos, width, height);
+			ctx.stroke();
+
+			for(var d = 0; d < xval.length; d++){
+				if(!ctrl)
+					dotsel[d] = false;
+				if(!dotsel[d])
+					ctx.fillStyle = dcolor[d];
+				if(((xval[d] > xpos && xval[d] + 10 < width + xpos) ||(xval[d] < xpos && xval[d] > width + xpos)) && ((yval[d]-10 > ypos && yval[d]+10 < height + ypos) || (yval[d]+10 < ypos && yval[d]-10 > height + ypos))){
+                    dotsel[d] = true; 
+					ctx.fillStyle = "black"; 
+				}
+				currDraw = true; 
+				drawDot(xval[d], yval[d], false); 			
+			}
+			currDraw = false; 
+		}
+		function drawDot(x, y, newdot){
+			if(currDraw){
+				ctx.fillRect(x, y, 10, 10); 
+				if(newdot){
+                    if(selecting){
+                        selecting = false; 
+                        ctx.beginPath();
+                        ctx.clearRect(0, 0, 500, 500);
+                        for(var d = 0; d < xval.length; d++){
+                            ctx.fillStyle = dcolor[d]; 
+                            dotsel[d] = false; 
+                            ctx.fillRect(xval[d], yval[d], 10, 10); 
+                        }
+                    }
+                    else{
+                        xval.push(x); 
+                        yval.push(y); 
+                        dcolor.push(ctx.fillStyle); 
+                        dotsel.push(false);
+                    }
+				}
+				ctx.stroke(); 
+			}
+		}
+		function setColor(){ //generates the new color rainbow order
+			ctx.beginPath(); 
+   			ctx.fillStyle = "red";
+   			ctx.strokeStyle = ctx.fillStyle;
+			return "red"; 
+		}
+		function clearCanvas(){//resets all the dots and clears the canvas
+			xval = []; 
+			yval = []; 
+			dcolor = []; 
+			ctx.clearRect(0, 0, 500, 500);
+			var s = txt.CreateTextFile("web-docs/Lab07/dots.txt", true);
+		}
+		function drawEdges()
+		{//connects each dot in S with every other dot in S.
+			ctx.fillStyle = "black";
+			for(var d= 0; d < xval.length; d++)
+			if(dotsel[d])
+			for(var p= d; p < xval.length; p++){
+			if(dotsel[p]){
+			var edgePoints = [];
+			ctx.beginPath();
+			ctx.moveTo(xval[d] + 10, yval[d] + 10);
+			ctx.lineTo(xval[p] + 10, yval[p] + 10);
+			edgePoints.push(xval[d] + 10);
+			edgePoints.push(yval[d] + 10);
+			edgePoints.push(xval[p] + 10);
+			edgePoints.push(yval[p] + 10);
+			edges.push(edgePoints);
+			ctx.stroke();
+	}
+}
+}
+function clearEdges() //redraw all of the dots
+{
+	ctx.clearRect(0, 0, 500, 500);
+            var can=document.getElementById('canvas');
+			var rect = can.getBoundingClientRect();
+            xpos = xposel-rect.left; 
+            ypos = yposel-rect.top; 
+            
+            width = event.x- xposel;
+            height = event.y- yposel; 
+			for(var d = 0; d < xval.length; d++)
+			{
+				if(!ctrl)
+					dotsel[d] = false;
+				if(!dotsel[d])
+					ctx.fillStyle = dcolor[d];
+				if(((xval[d] > xpos && xval[d] + 10 < width + xpos) ||(xval[d] < xpos && xval[d] > width + xpos)) && ((yval[d]-10 > ypos && yval[d]+10 < height + ypos) || (yval[d]+10 < ypos && yval[d]-10 > height + ypos))){
+                    dotsel[d] = true; 
+					ctx.fillStyle = "red"; 
+				}
+				currDraw = true; 
+				drawDot(xval[d], yval[d], false); 			
+			}
+			currDraw = false; 
+}
+function toggleEdges(){//removes all existing edges between dots in S and inserts an edge if none was there.
+return 0;
+}
+	</script> 
+</head> 
+<body onload="setup()">
+		<button onclick="clearCanvas()">clear canvas</button>
+		<button id="save" onclick="save()">Save</button>
+		<br>
+	<canvas id="canvas" class="turkey" width="500" height="500" style="border:1px solid black; margin: 0px;"> </canvas> 
+	<div>Output:
+		<div id='product'></div>
+	</div>
+
+</body>
+

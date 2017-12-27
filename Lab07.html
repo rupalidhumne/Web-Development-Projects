@@ -1,0 +1,43 @@
+
+<script>
+	var coords = new Array()
+	var rad = new Array()
+	function drawDot()
+	{
+		console.log(event);
+		var can=document.getElementById('canvas');
+		var ctx=can.getContext('2d');
+		var rect = can.getBoundingClientRect();
+		var x=event.x-rect.left;
+		var y=event.y-rect.top;
+		ctx.rect(x,y, 10,10);
+		storeCoordinate(x,y,coords);
+		rad.push(5);
+		ctx.stroke();
+
+		//draw a dot at the x,y at which we clicked
+	}
+		function storeCoordinate(x, y, array) 
+		{
+	    array.push(x);
+	    array.push(y);
+	}
+	function clearCanvas()
+	{
+		var c = document.getElementById("canvas");
+		var ctx = c.getContext("2d");
+		ctx.beginPath();
+		ctx.clearRect(0, 0, 500, 500);
+
+	}
+
+</script>
+</head>
+<body>
+<canvas id='canvas'width="500" height="500" style="border:1px solid #000000;" onclick="drawDot()"></canvas>
+<div id = "buttons">
+	<input type="button" id="clear" value="Clear" onClick="clearCanvas()">
+</div>
+</canvas>
+<body>
+<html>

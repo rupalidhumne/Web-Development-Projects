@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Grocery Shopping! </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    
+    <script src = "final.js"></script>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: url("restaurant_icons.png");
+            font: 400 15px Lato, sans-serif;
+        }
+
+        h1 {
+            color: orange;
+            text-align: center;
+        }
+        .jumbotron {
+          background-color: #f4511e; /* Orange */
+          color: #ffffff;
+          padding: 100px 25px;
+          font-family: Montserrat, sans-serif;
+        }
+        .container-fluid {
+          padding: 60px 50px;
+        }
+
+        button {
+          font: 400 15px Lato, sans-serif;
+        }
+        #curBudget1 {
+          text-align: center;
+        }
+        #curBudget1 h2,
+        #curBudget1 p {
+          display: inline;
+        }
+
+        #buying{
+            display: block;
+            float: left;
+            height: 20px;
+            width: 250px;
+        }
+        #curBudget1 {
+          max-width: 200px;
+        }
+        #buy{
+            display: block;
+            float: left;
+            height: 40px;
+            margin: -1px -2px -2px;
+            width: 41px;
+        }
+        .wordwrap { 
+           white-space: pre-wrap;      /* CSS3 */   
+           white-space: -moz-pre-wrap; /* Firefox */    
+           white-space: -pre-wrap;     /* Opera <7 */   
+           white-space: -o-pre-wrap;   /* Opera 7 */    
+           word-wrap: break-word;      /* IE */
+        }
+        #numFruits {
+          max-width:250px;
+        }
+        #boughtitems {
+          max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1> On a Budget! </h1>
+  <p>Buy the most things you can on a budget!</p>
+  <a href="listhighlight.php">PHP</a><a href="finalhighlight.php">JS</a><a href="indexhighlight.php">HTML</a>
+</div>
+
+
+<div id = "curBudget1" class=" row pull-right" style="position: relative; margin: 30px; padding-bottom: 20px; padding-top: 10px; padding-right: 30px; padding-left: 10px; background-color: #B19CD9; text-align: center; right: 0;"> 
+  <h2 style="text-align: left">Budget: </h2> <p id="curBudget"></p><br>
+  <button id = "budget" class="btn btn-large btn-success" onclick="getBudget()" style="width: 200px; height: 30px; text-align: center;">Get my Budget</button>
+</div>
+
+<div id = "numFruits" class="row pull-right" style="position: absolute;
+    bottom: 0; right: 0; margin-top: 20px; margin-right: 25px; margin-left: 15px; margin-bottom: 30px; width: 250px; height: 145px; background-color: #B19CD9; text-align: center"> 
+  <h2 style="text-align: left; padding-left: 10px;">Goal: </h2> <p id="foodAmounts"></p>
+  <button id = "amountFood" onclick="getFoods()" class="btn btn-large btn-success" style="width: 100px; height: 30px;">Roll</button>
+</div>  
+
+  <div id = "boughtitems" class="pull-right" style="margin: 30px; width: 400px; height; 800px; background-color: #d7d7d7;">
+    <h2 style="text-align: left; padding-left: 10px;">Bought items: </h2>
+    <div id="list" style="padding-left: 10px; width: 400px; height; 800px; background-color: #d7d7d7;"></div>
+  </div>
+
+<div id = "option" class="container-fluid">
+  <select id="compare1">
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="orange">Orange</option>
+    <option value="cherry">Cherry</option>
+    <option value="peach">Peach</option>
+    <option value="melon">Melon</option>
+    <option value="watermelon">Watermelon</option>
+    <option value="pear">Pear</option>
+    <option value="tangerine">Tangerine</option>
+  </select>
+  <select id="compare2">
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="orange">Orange</option>
+    <option value="cherry">Cherry</option>
+    <option value="peach">Peach</option>
+    <option value="melon">Melon</option>
+    <option value="watermelon">Watermelon</option>
+    <option value="pear">Pear</option>
+    <option value="tangerine">Tangerine</option>
+  </select>
+    
+
+  <br><button id = "prices" class="btn btn-default btn-lg" onclick="comparePricesFruit()" style="width: 200px; height: 30px">Compare Prices</button>
+<div id="comparatorFruit">--</div>
+
+<select id="compare3">
+  <option value="lettuce">Lettuce</option>
+  <option value="carrot">Carrot</option>
+  <option value="cauliflower">Cauliflower</option>
+  <option value="broccoli">Broccoli</option>
+  <option value="peas">Peas</option>
+  <option value="celery">Celery</option>
+  <option value="squash">Squash</option>
+  <option value="onion">Onion</option>
+</select>
+<select id="compare4">
+  <option value="lettuce">Lettuce</option>
+  <option value="carrot">Carrot</option>
+  <option value="cauliflower">Cauliflower</option>
+  <option value="broccoli">Broccoli</option>
+  <option value="peas">Peas</option>
+  <option value="celery">Celery</option>
+  <option value="squash">Squash</option>
+  <option value="onion">Onion</option>
+</select>
+<br><button id = "prices" class="btn btn-default btn-lg" onclick="comparePricesVeggies()" style="width: 200px; height: 30px">Compare Prices</button>
+<div id="comparatorVeggies">--</div>
+
+  <input type="text" class="form-control" id="buying" placeholder="Buy an item">
+  <button id = "buy" onclick="buyItem()" style="width: 100px; height: 30px" class="btn btn-danger" disabled>Purchase</button>
+</div>
+</body>
+</html>

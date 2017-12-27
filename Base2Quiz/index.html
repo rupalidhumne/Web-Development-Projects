@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<title>Base two quiz</title>
+	<head>
+		<link rel="stylesheet" href="CSS/advquiz.css">
+		<script src ="lab.js"></script>
+	</head>
+	<body>
+		<h1> When given the question type in the answer!</h1>
+			<button type = "button" id="start" onClick = "start()" style="width: 100px; height: 30px">Start</button>
+			<button type = "button" id="redo" onClick = "restart()" style="width: 100px; height: 30px">Restart</button>
+			<button type = "button" id="end" onClick = "quit()" style="width: 100px; height: 30px">Stop</button>
+			<button type = "button" id="skip" onClick = "skip()" style="width: 100px; height: 30px">Skip</button>
+		<div id = "score">Score: </div>
+		<div id = "question"> Question: </div>
+		<div id = "input"> <input type = "number" id = "textbox"  oninput = "validate();updateScore();" disabled = true></div>
+		<div id = "prog"> Completed answers will be displayed here</div>
+		<div id = "timer">Time: 5:00</div>
+		<div id = "display" align = "center"></div>
+	</body>
+
+</html>

@@ -1,0 +1,47 @@
+<html>
+<title> Grocery Shopping! </title>
+<head>
+<script src = "final.js"></script>
+<style>
+body {
+    background-color: #d0e4fe;
+}
+
+h1 {
+    color: orange;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+  <ul>
+    <li> <a href = "index.html">Return home</a></li>
+  </ul>
+<select id="compare1">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="orange">Orange</option>
+  <option value="cherry">Cherry</option>
+  <option value="peach">Peach</option>
+  <option value="melon">Melon</option>
+  <option value="watermelon">Watermelon</option>
+  <option value="pear">Pear</option>
+  <option value="tangerine">Tangerine</option>
+</select>
+<select id="compare2">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="orange">Orange</option>
+  <option value="cherry">Cherry</option>
+  <option value="peach">Peach</option>
+  <option value="melon">Melon</option>
+  <option value="watermelon">Watermelon</option>
+  <option value="pear">Pear</option>
+  <option value="tangerine">Tangerine</option>
+</select>
+<button id = "prices" onclick="comparePrices()" style="width: 100px; height: 30px">Compare Prices</button>
+<div id="comparator">--</div>
+<input type="text" id="buying" placeholder="Buy an item">
+<button id = "buy" onclick="buyItem()" style="width: 100px; height: 30px">Purchase</button>
+</body>
+<html>

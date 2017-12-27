@@ -1,0 +1,71 @@
+</html>
+<head>
+	<title>Scrabble Searcher</title>
+	<style>
+		#product
+		{
+			
+			font-family: papyrus;
+		}
+		body
+		{
+			background-color: #FFCCCC;
+		}
+		input
+			{
+			background-color: #CCCCFF;
+			}
+	</style>
+	<script>
+		function generateWords()
+		{
+		
+			var reIn=document.getElementById('reInput').value;
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() 
+			{
+				document.getElementById("product").innerHTML = 'waiting';
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+				{
+					document.getElementById("product").innerHTML = xmlhttp.responseText;
+				}
+			}
+			
+			var args =
+			 {
+				'first':reIn,
+				'safe':document.getElementById('pick').value
+
+			};
+			//document.getElementById("product").innerHTML = value;
+
+			xmlhttp.open("GET", "words.php?"+dw_encodeVars(args), true);
+			xmlhttp.send();
+		}
+		function dw_encodeVars(params) 
+		{
+			var str = '';
+			for (var i in params ) 
+			{
+				str += encodeURIComponent(i) + '=' + encodeURIComponent( params[i] ) + '&';
+			}
+			return str.slice(0, -1);
+		}
+	</script>
+</head>
+<body>
+	<h1> Enter a Phrase to be searched for and find all the phrases matching that! </h1>
+	<div>
+		Phrase To be searched for:
+		<input type=text id='reInput'>
+	</div>
+	<select id = 'pick'>
+		<option value=0>Search for the phrase in words </option>
+		<option value=1>Enter letter of first character in word</option>
+	<input type=button value='Generate' onclick='generateWords();'>
+	<div>Output:
+		<div id='product'></div>
+	</div>
+</body>
+
+</html>

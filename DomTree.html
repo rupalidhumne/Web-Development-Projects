@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>DOM Tree Navigation</title>
+	<style type="text/css">
+	div{
+			background-color: orange;
+			border-radius: 8px;
+			border: 20px #00FFCC solid;
+			margin:12px;
+			padding: 2px;
+		}
+		body{
+			background-color:white;
+			border-color: #00FFCC;
+			border: 20px #00FFCC dashed;
+
+			}
+		.location{
+			width: 40%;
+			background-color: #9900FF;
+		}
+		.animal{
+			background-color: #FF9999;
+		}
+		p{
+			background-color:#FF9999 ;
+			border: 10px #00FFCC dashed;
+			border-color: #00FFCC;
+		}
+		li{
+				border: 10px #00FFCC dashed;
+				border-color: #00FFCC;
+
+			}
+			.turkey
+			{
+				color:green;
+				border: 10px #00FFCC dashed;
+				border-color: #00FFCC;
+			}
+	</style>
+	<script>
+	function highlight()
+		{
+			
+			var r=event.target;//gets the event target from the onclick
+			if(r.firstElementChild==null && r.nextElementSibling==null)
+			{
+				while(r.parentElement.parentElement!=null && r.nextElementSibling==null) 
+				{
+					r=r.parentElement;
+				}
+				if(r.parentElement.parentElement==null)
+				{
+					r.style.borderColor="blue";
+					setTimeout(function() {r.style.borderColor = "#00FFCC"}, 50);
+				}
+				else if(r.nextElementSibling!=null)
+				{
+					r.nextElementSibling.style.borderColor="blue";
+					setTimeout(function() {r.nextElementSibling.style.borderColor = "#00FFCC"}, 50);
+				}
+			}
+
+
+			/*
+			if(r.firstElementChild==null && r.nextElementSibling==null && r.parentElement.nextElementSibling==null && r.parentElement.parentElement.nextElementSibling==null)
+			{
+				while(r.firstElementChild==null && r.nextElementSibling==null && r.parentElement.nextElementSibling==null)
+				{
+					r=r.parentElement;
+				}
+				r.parentElement.parentElement.style.borderColor = "blue"; 
+				setTimeout(function() {r.parentElement.parentElement.style.borderColor = "#00FFCC"}, 50);
+			}
+			*/
+			else if(r.firstElementChild == null)
+			{
+				
+				if(r.nextElementSibling!=null)
+				{
+					r.nextElementSibling.style.borderColor = "blue"; 
+					setTimeout(function() {r.nextElementSibling.style.borderColor = "#00FFCC"}, 50);
+				}
+				else
+				{
+					while(r.nextElementSibling == null && r.parentElement != null)
+						{
+							r =r.parentElement;
+						}
+					if(r.nextElementSibling ==null)
+					{
+						r.firstElementChild.style.borderColor = "blue";
+						setTimeout(function() {r.firstElementChild.style.borderColor = "#00FFCC"}, 50);
+					}
+					else
+					{
+						r.nextElementSibling.style.borderColor = "blue";
+						setTimeout(function() {r.nextElementSibling.style.borderColor = "#00FFCC"}, 50);
+					}		
+				}
+			}
+	else if(r.firstElementChild != null)
+	{
+		r.firstElementChild.style.borderColor = "blue";
+		setTimeout(function() {r.firstElementChild.style.borderColor = "#00FFCC";}, 50);
+	}
+	
+	else if(r.nextElementSibling!=null & r.firstElementChild==null)
+	{
+		r.nextElementSibling.style.borderColor = "blue";
+		setTimeout(function() {r.nextElementSibling.style.borderColor = "#00FFCC";}, 50);
+	}
+	else if(r.nextElementSibling==null && r.firstElementChild==null && r.parentElement!=null)
+	{
+		while(r.parentElement!=null)
+		{
+			r=r.parentElement;
+			console.log("r"+r);
+			console.log("rp"+r.parentElement)
+
+		}
+		r.firstElementChild.style.borderColor = "blue";
+		setTimeout(function() {r.style.borderColor = "#00FFCC";}, 50);
+	}
+}
+	</script>
+	</head>
+	<body class="fadeIn" onclick="highlight()">
+			<div class="location">
+				Junk food
+				<div class="animal">
+					Fast food
+					<div>McDonalds
+						<li> French Fries </li></div>
+					<div>Burger King</div>
+					<div>Wendys</div>
+					<div>Arbys</div>
+					<div>5 Guys
+						<div>6 Guys
+							<div>7 Guys</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="location">
+				Healthy food
+				<div class="animal">
+					<span class="turkey">Gree</span>ns!
+					<div>Salad <p> :-) </p> </div>
+					<div>Fruits</div>
+					<div>Wheat</div>
+				</div>
+			</div>
+	</body>
+	</html>
